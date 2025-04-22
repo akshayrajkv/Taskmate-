@@ -57,10 +57,63 @@ TextEditingController _controller = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
+      final userProvider = context.watch<TodoViewModel>();
+  final user = userProvider.user;
+    return  Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
+    drawer:   Drawer(
+      backgroundColor: Colors.white,
+                child: ListView(
+                  children: [
+                    DrawerHeader(
+                      decoration: BoxDecoration(color: const Color.fromARGB(255, 122, 191, 247)),
+                      child:Column(
+                        children: [
+                          Column(
+                            children: [
+                            const  CircleAvatar(
+                                radius: 50,
+                              ),
+                              AppSpacing.h10,
+                              Text("${user?.name.toString()??''}")
+                            ],
+                          ),
+                        ],
+                      ),),
+                  const ListTile(
+                    leading: Icon(Icons.person),
+                    title: Text('Profile'),
+                  ),
+            const         ListTile(
+                    leading: Icon(Icons.settings),
+                    title: Text('Settings'),
+                  ),
+              const     Column(
+                    children: [
+                        ListTile(
+                                      leading: Icon(Icons.logout),
+                                      title: Text('Logout'),
+                                    ),
+                    ],
+                  ),
+
+            
+                      
+                  ],
+                ),
+              ),
       appBar: AppBar(
+        leading: Builder(
+          builder: (context) {
+            return IconButton(onPressed: (){
+              Scaffold.of(context).openDrawer();
+
+            
+            }, icon:Icon(Icons.menu,color: Colors.white,
+            ));
+          }
+        ),
     
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
@@ -143,7 +196,7 @@ TextEditingController _controller = TextEditingController();
                       }
 
                       return SizedBox(
-                        height: 200,
+                      //  height: 200,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: categories.length + 1,
@@ -164,9 +217,9 @@ TextEditingController _controller = TextEditingController();
                                 catogoryitem: categories[index],
                                 color: tileColors[index],
                                 onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) => TaskPage(
-                                    category: categories[index],
-                                  ),));
+                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>CategoryPage(categoryy: categories[index])
+                                  )
+                                  );
                                 },
                               );
                             }
@@ -184,7 +237,7 @@ TextEditingController _controller = TextEditingController();
               child: DraggableScrollableSheet(
                 initialChildSize: 0.5,
                 minChildSize: 0.5,
-                maxChildSize: 1.0,
+                maxChildSize: 1,
                 builder: (context, scrollController) {
                   return Taskcontainer(
                     scrollController: scrollController,
@@ -204,21 +257,13 @@ TextEditingController _controller = TextEditingController();
       floatingActionButtonLocation:
           FloatingActionButtonLocation.miniCenterDocked,
       bottomNavigationBar:
-          BottomNavigationBar(currentIndex: selectedindex, items: [
+          BottomNavigationBar(currentIndex: selectedindex, items:const [
         BottomNavigationBarItem(
           icon: Icon(Icons.home),
           label: 'Home',
         ),
         BottomNavigationBarItem(
-            icon: InkWell(
-                onTap: () {
-                  Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                        builder: (context) => Profilepage(),
-                      ));
-                },
-                child: Icon(Icons.person)),
+            icon: Icon(Icons.person),
             label: 'profile'),
       ]),
     );

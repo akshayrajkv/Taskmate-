@@ -15,10 +15,10 @@ class AddTodoscreen extends StatefulWidget {
 
 class _AddTodoscreenState extends State<AddTodoscreen> {
   // TodoViewModel _todoViewModel =TodoViewModel();
-  String? selectedValue = 'work';
+  String? selectedValue = 'Work';
   String? selectedPriority = 'Low';
 
-  List<String> category = ['work', 'personal'];
+  List<String> category = ['Work', 'Personal'];
   List<String> priority = ['Low', 'Medium', 'High', 'Urgent'];
   final TextEditingController _taskcontroller = TextEditingController();
   final TextEditingController _datetimecontroller = TextEditingController();
@@ -57,6 +57,7 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
               // add task textfiled
 
               TextField(
+                textCapitalization: TextCapitalization.sentences,
                 focusNode: _focusNode1,
                 controller: _taskcontroller,
                 decoration: InputDecoration(
@@ -122,6 +123,7 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
               AppSpacing.h10,
               //date picker
               TextField(
+                textCapitalization: TextCapitalization.sentences,
                 focusNode: _focusNode3,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
@@ -146,6 +148,7 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
               AppSpacing.h10,
               // time picker
               TextField(
+                textCapitalization: TextCapitalization.sentences,
                 focusNode: _focusNode4,
                 style: const TextStyle(color: Colors.white),
                 decoration: const InputDecoration(
@@ -214,7 +217,7 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
                 Navigator.pop(context);
               },
               child: const Customtext(
-                text: 'cancel',
+                text: 'CANCEL',
                 size: 18,
               ),
             )),
@@ -226,7 +229,7 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
                         final todo = Todoclass(
                           title: _taskcontroller.text.trim(),
                           dueDate: _datetimecontroller.text.trim(),
-                          category: selectedValue ?? 'work',
+                          category: selectedValue ?? 'Work',
                           priority: selectedPriority ?? 'Low',
                           isCompleted: false,
                         );

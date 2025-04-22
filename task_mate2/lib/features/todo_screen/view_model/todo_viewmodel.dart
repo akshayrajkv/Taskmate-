@@ -11,6 +11,7 @@ class TodoViewModel with ChangeNotifier {
   Usermodel? user;
   bool isLoading = false;
   List<Todoclass>? todos;
+  List<Todoclass>?catecorytodos;
   List<String>? categories;
 
 //get user
@@ -71,12 +72,12 @@ Future<void>getAllcategory()async{
   notifyListeners();
 }
 
- Future<void> fetchCatgoryTodos(String category) async {
+Future <void> fetchCatgoryTodos(String category) async {
   isLoading = true;
   notifyListeners();
   try {
     final fetchedCategoryTodos = await _todoRepo.getCategoryTodos(category); // Replace with your actual fetch logic
-    todos = fetchedCategoryTodos;
+    catecorytodos = fetchedCategoryTodos;
   } catch (e) {
     print("Error fetching todos: $e");
   }

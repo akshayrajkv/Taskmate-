@@ -77,8 +77,7 @@ class TodoServises {
 
     if (token == null) return false;
     print("Sending to API: ${jsonEncode(todo.toJson())}");
-    final response = await http.post(
-      Uri.parse("$baseUrl/tasks/"), // API endpoint
+    final response = await http.post(Uri.parse("$baseUrl/tasks/"), // API endpoint
       headers: {
         "Authorization": "Bearer $token",
         "Content-Type": "application/json"
