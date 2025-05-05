@@ -1,10 +1,10 @@
-
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_mate2/features/pofile&settings/view/profilepage.dart';
 import 'package:task_mate2/features/todo_screen/view/categoryscreen.dart';
 import 'package:task_mate2/features/todo_screen/view/widgets/add_category.dart';
 import 'package:task_mate2/features/todo_screen/view/widgets/category_tile.dart';
+import 'package:task_mate2/features/todo_screen/view/widgets/hmdrawer.dart';
 import 'package:task_mate2/features/todo_screen/view/widgets/taskcontainer.dart';
 import 'package:task_mate2/features/todo_screen/view_model/todo_viewmodel.dart';
 import 'package:task_mate2/util/consts.dart';
@@ -21,7 +21,7 @@ class Homescreen extends StatefulWidget {
 
 class _HomescreenState extends State<Homescreen> {
 //  List<String>? categoryList ;
-TextEditingController _controller = TextEditingController();
+  TextEditingController _controller = TextEditingController();
   List<Color> tileColors = [
     const Color.fromARGB(255, 231, 81, 16),
     const Color.fromARGB(255, 232, 220, 110),
@@ -34,87 +34,37 @@ TextEditingController _controller = TextEditingController();
     const Color.fromARGB(255, 140, 220, 143),
   ];
 
-  int selectedindex = 0;
-  // bool isChecked =false;
-  final List<Widget> _screens = [
-    Homescreen(),
-    Profilepage(),
-  ];
-  void _onItemTapped(int index) {
-    setState(() {
-      selectedindex = index;
-    });
-  }
-
   void initState() {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final viewmodel = Provider.of<TodoViewModel>(context, listen: false);
       viewmodel.userdetail();
+      viewmodel.getUsercategory();
       viewmodel.getAllcategory();
+    
     });
   }
 
   @override
   Widget build(BuildContext context) {
-      final userProvider = context.watch<TodoViewModel>();
-  final user = userProvider.user;
-    return  Scaffold(
+    final userProvider = context.watch<TodoViewModel>();
+    final user = userProvider.user;
+    return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-    drawer:   Drawer(
-      backgroundColor: Colors.white,
-                child: ListView(
-                  children: [
-                    DrawerHeader(
-                      decoration: BoxDecoration(color: const Color.fromARGB(255, 122, 191, 247)),
-                      child:Column(
-                        children: [
-                          Column(
-                            children: [
-                            const  CircleAvatar(
-                                radius: 50,
-                              ),
-                              AppSpacing.h10,
-                              Text("${user?.name.toString()??''}")
-                            ],
-                          ),
-                        ],
-                      ),),
-                  const ListTile(
-                    leading: Icon(Icons.person),
-                    title: Text('Profile'),
-                  ),
-            const         ListTile(
-                    leading: Icon(Icons.settings),
-                    title: Text('Settings'),
-                  ),
-              const     Column(
-                    children: [
-                        ListTile(
-                                      leading: Icon(Icons.logout),
-                                      title: Text('Logout'),
-                                    ),
-                    ],
-                  ),
-
-            
-                      
-                  ],
-                ),
-              ),
+      drawer:  Hmdrawer(),
+      //AppBar
       appBar: AppBar(
-        leading: Builder(
-          builder: (context) {
-            return IconButton(onPressed: (){
-              Scaffold.of(context).openDrawer();
-
-            
-            }, icon:Icon(Icons.menu,color: Colors.white,
-            ));
-          }
-        ),
-    
+        leading: Builder(builder: (context) {
+          return IconButton(
+              onPressed: () {
+                Scaffold.of(context).openDrawer();
+              },
+              icon: const Icon(
+                Icons.menu,
+                color: Colors.white,
+              ));
+        }),
         automaticallyImplyLeading: false,
         backgroundColor: Colors.transparent,
         shape: const RoundedRectangleBorder(
@@ -133,14 +83,10 @@ TextEditingController _controller = TextEditingController();
             );
           },
         ),
-        actions: const [
-    
-          AppSpacing.w10
-        ],
+        actions: const [AppSpacing.w10],
       ),
-    
       body:
-    
+      
       Container(
         decoration: const BoxDecoration(
           gradient: backgroundColor,
@@ -154,6 +100,8 @@ TextEditingController _controller = TextEditingController();
             AppSpacing.h20,
             Padding(
               padding: const EdgeInsets.all(15.0),
+                  // search bar
+
               child: TextField(
                 decoration: InputDecoration(
                   suffixIcon:
@@ -169,13 +117,15 @@ TextEditingController _controller = TextEditingController();
                       borderSide: const BorderSide(color: Colors.transparent)),
                   fillColor: Colors.white60,
                   filled: true,
-              
                 ),
               ),
             ),
             AppSpacing.h10,
             const Padding(
               padding: EdgeInsets.only(left: 15),
+
+              // category 
+
               child: Customtext(
                 text: 'Category',
               ),
@@ -186,17 +136,16 @@ TextEditingController _controller = TextEditingController();
             Padding(
               padding: const EdgeInsets.only(left: 10),
               child: Container(
-                  height: 200,
+                  height: 175,
                   child: Consumer<TodoViewModel>(
                     builder: (context, viewModel, _) {
-                      final categories = viewModel.categories ?? [];
+                      final categories = viewModel.usercategories ?? [];
 
                       if (viewModel.isLoading && categories.isEmpty) {
                         return const Center(child: CircularProgressIndicator());
                       }
 
                       return SizedBox(
-                      //  height: 200,
                         child: ListView.builder(
                           scrollDirection: Axis.horizontal,
                           itemCount: categories.length + 1,
@@ -204,22 +153,30 @@ TextEditingController _controller = TextEditingController();
                             if (index == categories.length) {
                               return Catagorytile(
                                 onTap: () {
-                                  showDialog(context: context, builder:(context) {
-                                    return ShowDialoges(categoryController:_controller );
-                                  },);
-                                
+                                  showDialog(
+                                    context: context,
+                                    builder: (context) {
+                                      return ShowDialoges(
+                                          onTap: (p0) {
+                                            viewModel.addnewcategory(
+                                                _controller.text);
+                                          },
+                                          categoryController: _controller);
+                                    },
+                                  );
                                 },
                                 catogoryitem: 'Add',
                               );
                             } else {
                               return Catagorytile(
-
                                 catogoryitem: categories[index],
                                 color: tileColors[index],
-                                onTap: (){
-                                  Navigator.push(context, MaterialPageRoute(builder: (context) =>CategoryPage(categoryy: categories[index])
-                                  )
-                                  );
+                                onTap: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (context) => CategoryPage(
+                                              categoryy: categories[index])));
                                 },
                               );
                             }
@@ -227,45 +184,16 @@ TextEditingController _controller = TextEditingController();
                         ),
                       );
                     },
-                  )
-
-              
-                  ),
+                  )),
             ),
             AppSpacing.h30,
             Expanded(
-              child: DraggableScrollableSheet(
-                initialChildSize: 0.5,
-                minChildSize: 0.5,
-                maxChildSize: 1,
-                builder: (context, scrollController) {
-                  return Taskcontainer(
-                    scrollController: scrollController,
-                  );
-                },
-              ),
+              child: Taskcontainer(),
             ),
           ],
-        ),
-      ),
-      floatingActionButton: FloatingActionButton(
-        onPressed: () {
-          Navigator.pushNamed(context, '/addtodoscreen');
-        },
-        child: const Icon(Icons.add),
-      ),
-      floatingActionButtonLocation:
-          FloatingActionButtonLocation.miniCenterDocked,
-      bottomNavigationBar:
-          BottomNavigationBar(currentIndex: selectedindex, items:const [
-        BottomNavigationBarItem(
-          icon: Icon(Icons.home),
-          label: 'Home',
-        ),
-        BottomNavigationBarItem(
-            icon: Icon(Icons.person),
-            label: 'profile'),
-      ]),
-    );
+        ),));
+      
+  
+      
   }
 }

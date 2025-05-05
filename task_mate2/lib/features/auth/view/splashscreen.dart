@@ -3,7 +3,7 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mate2/features/auth/view/login_screen.dart';
-import 'package:task_mate2/features/todo_screen/view/home_screen.dart';
+import 'package:task_mate2/features/todo_screen/view/home.dart';
 
 
 class Splashscreen extends StatefulWidget {
@@ -34,7 +34,7 @@ if(_token==null){
 
 }
 else{
-  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Homescreen(),));
+  Navigator.pushReplacement(context, MaterialPageRoute(builder: (context) => Home(),));
 }
 }
   @override

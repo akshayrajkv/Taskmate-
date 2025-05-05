@@ -3,16 +3,14 @@ import 'dart:convert';
 import 'package:http/http.dart' as http;
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:task_mate2/features/todo_screen/model/categorymodel%20.dart';
-
 import 'package:task_mate2/features/todo_screen/model/todomodel.dart';
 import 'package:task_mate2/features/todo_screen/model/userdetailmodel.dart';
 
 class TodoServises {
   final String baseUrl = "https://simple-tasks-api.onrender.com";
+  
 
   // featching user details
-
-
 
   Future<Usermodel?> userdetail() async {
     final prefs = await SharedPreferences.getInstance();
@@ -77,7 +75,8 @@ class TodoServises {
 
     if (token == null) return false;
     print("Sending to API: ${jsonEncode(todo.toJson())}");
-    final response = await http.post(Uri.parse("$baseUrl/tasks/"), // API endpoint
+    final response = await http.post(
+      Uri.parse("$baseUrl/tasks/"), // API endpoint
       headers: {
         "Authorization": "Bearer $token",
         "Content-Type": "application/json"
@@ -88,7 +87,7 @@ class TodoServises {
     print(response.body);
     return response.statusCode == 201; // Return true if successfully created
   }
-  // get user category
+  // get All category
 
   Future<List<String>?> getAllcategory() async {
     final prefs = await SharedPreferences.getInstance();
@@ -97,23 +96,54 @@ class TodoServises {
     if (token == null) {
       return null;
     }
-    try{
-    final response = await http.get(Uri.parse("$baseUrl/categories/all/"));
-    if (response.statusCode == 200) {
-      final decodebode = jsonDecode(response.body);
-      Categorymodel category = Categorymodel.fromJson(decodebode);
-      return category.categories;
-    }
-    }
-    catch(e){
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/categories/all"),
+        // headers: {
+        //   "Authorization": "Bearer $token",
+        //   "Content-Type": "application/json"
+        // },
+      );
+
+      if (response.statusCode == 200) {
+        final decodebody = jsonDecode(response.body);
+        Categorymodel category = Categorymodel.fromJson(decodebody);
+        return category.categories;
+      }
+    } catch (e) {
       print(e);
     }
   }
 
+  Future<List<String>?> getUsercategory() async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString('auth_Token');
+
+    if (token == null) {
+      return null;
+    }
+    try {
+      final response = await http.get(
+        Uri.parse("$baseUrl/users/categories/"),
+        headers: {
+          "Authorization": "Bearer $token",
+          "Content-Type": "application/json"
+        },
+      );
+
+      if (response.statusCode == 200) {
+        final decodebody = jsonDecode(response.body);
+        Categorymodel category = Categorymodel.fromJson(decodebody);
+        return category.categories;
+      }
+    } catch (e) {
+      print(e);
+    }
+  }
 
 // feaching data using category
 
- Future<List<Todoclass>?> fetchcategorytodos(String category) async {
+  Future<List<Todoclass>?> fetchcategorytodos(String category) async {
     final prefs = await SharedPreferences.getInstance();
     String? token = prefs.getString("auth_Token");
 
@@ -121,7 +151,8 @@ class TodoServises {
       return null;
     }
 
-    final response = await http.get(Uri.parse("$baseUrl/tasks/?category=$category"), headers: {
+    final response = await http
+        .get(Uri.parse("$baseUrl/tasks/?category=$category"), headers: {
       "Authorization": "Bearer $token",
       "Content-Type": "application/json",
     });
@@ -148,14 +179,24 @@ class TodoServises {
     return null;
   }
 
+  //adding new category
+  Future<void> addnewcategory(String newcategory) async {
+    final prefs = await SharedPreferences.getInstance();
+    String? token = prefs.getString("auth_Token");
 
-
+    if (token != null) {
+      return null;
+    }
+    final response =
+        await http.post(Uri.parse("$baseUrl/users/categories/"), headers: {
+      "Authorization": "Bearer $token",
+      "Content-Type": "application/json",
+    }, body: {
+      "name": newcategory
+    });
+    if (response.statusCode == 201) {
+      print("sussess");
+    }
+    ;
+  }
 }
-
-
-
-
-
-
-
-

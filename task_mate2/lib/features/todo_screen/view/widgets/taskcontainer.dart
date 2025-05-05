@@ -2,15 +2,14 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:task_mate2/features/todo_screen/view/widgets/task_tile.dart';
 import 'package:task_mate2/features/todo_screen/view_model/todo_viewmodel.dart';
-import 'package:task_mate2/util/consts.dart';
 import 'package:task_mate2/widgets/customtext.dart';
 
 class Taskcontainer extends StatefulWidget {
-  ScrollController scrollController;
+ 
 
   Taskcontainer({
     super.key,
-    required this.scrollController,
+  
   });
 
   @override
@@ -35,52 +34,29 @@ class _TaskcontainerState extends State<Taskcontainer> {
           borderRadius: BorderRadius.only(
               topLeft: Radius.circular(40), topRight: Radius.circular(40))),
       child: Column(
-        mainAxisAlignment: MainAxisAlignment.start,
+    //    mainAxisAlignment: MainAxisAlignment.sta,
+    crossAxisAlignment: CrossAxisAlignment.start,
         children: [
-          const SizedBox(height: 20),
-          const Customtext(
-            text: "Today's Tasks",
-            color: Colors.black,
-          ),
-          AppSpacing.h20,
+          
+    Padding(
+      padding: const EdgeInsets.only(left: 22,right: 22,bottom: 20,top: 20),
+      child:     Row(
+        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                
+            const     Customtext(
+                  text: "Today's Tasks",
+                  color: Colors.black,
+                ),
+                TextButton(onPressed: (){
+                  Navigator.pushNamed(context,'/alltodopage');
+                }, child:const Text('See All',
+                ))
+              ],
+            ),
+            ),
+          
           Expanded(child:
-              // FutureBuilder<List<Todoclass>?>(
-              //   future: todoprovider.fetchTodos(),  // Use the stored future
-              //   builder: (context,snapshot) {
-
-              //     if (snapshot.connectionState == ConnectionState.waiting) {
-              //       print("Has data: ${snapshot.hasData}");
-              //       return const Center(child: CircularProgressIndicator());
-              //     } else if (snapshot.hasError) {
-              //       return Center(
-              //         child: Text('Error: ${snapshot.error}'),
-              //       );
-              //     } else if (!snapshot.hasData || snapshot.data!.isEmpty) {
-              //       return const Center(
-              //         child: Text('No todos found'),
-              //       );
-              //     } else {
-              //       List<Todoclass> todos = snapshot.data!;
-              //       return ListView.builder(
-              //         controller:widget.scrollController ,
-              //         itemCount: todos.length,
-              //         itemBuilder: (context, index) {
-              //           Todoclass todo = todos[index];
-              //           return Column(
-              //             mainAxisAlignment: MainAxisAlignment.start,
-              //             children: [
-              //               Tasktile(
-              //                 isChecked: false,
-              //                 title: todo.title.toString(),
-              //               ),
-              //               const Divider(thickness: 1),
-              //             ],
-              //           );
-              //         },
-              //       );
-              //     }
-              //   },
-              // ),
               Consumer<TodoViewModel>(
             builder: (context, todoprovider, _) {
               if (todoprovider.isLoading) {
@@ -94,7 +70,7 @@ class _TaskcontainerState extends State<Taskcontainer> {
 
               return ListView.builder(
                 padding: EdgeInsets.zero,
-                controller: widget.scrollController,
+              
                 itemCount: todos.length,
                 itemBuilder: (context, index) {
                   final todo = todos[index];

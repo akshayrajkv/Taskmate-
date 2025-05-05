@@ -23,7 +23,7 @@ class Catagorytile extends StatelessWidget {
       child: InkWell(
         onTap: onTap,
         child: Container(
-          width: 150,
+          width: 125,
           decoration: BoxDecoration(
             color: color,
             borderRadius: BorderRadius.circular(10),
@@ -37,10 +37,10 @@ class Catagorytile extends StatelessWidget {
                 const     SizedBox( height: 30,),
                 Customtext(text :catogoryitem ,),
               const   SizedBox(height: 20,),
-                Row(
+            const   Row(
                   children: [
-                const    SizedBox(width: 70,),
-                   
+                  SizedBox(width: 70,),
+                  
                   ],
                 )
               ],

@@ -24,11 +24,11 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
   final TextEditingController _datetimecontroller = TextEditingController();
   final TextEditingController _timecontroller = TextEditingController();
 
-  FocusNode _focusNode1 = FocusNode();
-  FocusNode _focusNode2 = FocusNode();
-  FocusNode _focusNode3 = FocusNode();
-  FocusNode _focusNode4 = FocusNode();
-  FocusNode _focusNode5 = FocusNode();
+  final FocusNode _focusNode1 = FocusNode();
+  final FocusNode _focusNode2 = FocusNode();
+  final FocusNode _focusNode3 = FocusNode();
+  final FocusNode _focusNode4 = FocusNode();
+  final FocusNode _focusNode5 = FocusNode();
 
   @override
   void dispose() {
@@ -207,7 +207,7 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
       ),
       bottomNavigationBar: BottomAppBar(
         height: 60,
-        color: Color(0xFFEA82FF),
+        color:const Color(0xFFEA82FF),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -239,7 +239,7 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
                         });
                       } else {
                         ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
+                      const     SnackBar(
                             content: Text('Please fill all fields'),
                             backgroundColor: Colors.redAccent,
                           ),
@@ -249,7 +249,9 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
                     child: const Customtext(
                       text: 'CONFIRM',
                       size: 15,
-                    )))
+                    )
+                    )
+                    )
           ],
         ),
       ),

@@ -1,6 +1,5 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:task_mate2/features/auth/model/usermodel.dart';
 import 'package:task_mate2/features/todo_screen/model/todomodel.dart';
 import 'package:task_mate2/features/todo_screen/model/userdetailmodel.dart';
 import 'package:task_mate2/features/todo_screen/repository/classtodorepo.dart';
@@ -13,6 +12,7 @@ class TodoViewModel with ChangeNotifier {
   List<Todoclass>? todos;
   List<Todoclass>?catecorytodos;
   List<String>? categories;
+  List<String>? usercategories;
 
 //get user
   Future<void>userdetail()async{
@@ -65,6 +65,7 @@ Future<void>getAllcategory()async{
 
     final allcategories = await _todoRepo.getallcategories();
     categories = allcategories;
+    print("the categoryies are : ${ categories}");
   }catch(e){
   print(e);
   }
@@ -72,6 +73,24 @@ Future<void>getAllcategory()async{
   notifyListeners();
 }
 
+//feach user category
+
+Future<void>getUsercategory()async{
+    try{
+  isLoading = true;
+  notifyListeners();
+
+    final allcategories = await _todoRepo.getUsercategories();
+    usercategories = allcategories;
+    print("the user categoryies are : ${ categories}");
+  }catch(e){
+  print(e);
+  }
+  isLoading = false;
+  notifyListeners();
+}
+
+//feach todos based on category
 Future <void> fetchCatgoryTodos(String category) async {
   isLoading = true;
   notifyListeners();
@@ -86,5 +105,16 @@ Future <void> fetchCatgoryTodos(String category) async {
   notifyListeners();
 }
 
+Future <void>addnewcategory(String newcategory)async{
 
+  try {
+    await _todoRepo.addnewcategory(newcategory);
+    
+      print("added");
+  }catch(e){
+    print(e);
+  
+}
+
+}
 }

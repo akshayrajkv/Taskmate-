@@ -1,4 +1,5 @@
 
+import 'package:flutter/material.dart';
 import 'package:task_mate2/features/todo_screen/model/todomodel.dart';
 import 'package:task_mate2/features/todo_screen/model/userdetailmodel.dart';
 import 'package:task_mate2/features/todo_screen/services/todo_servises.dart';
@@ -25,9 +26,18 @@ Future<Usermodel?>getUser()async{
   return await _todoServises.getAllcategory();
   }
 
+ Future<List<String>?>getUsercategories()async{
+  return await _todoServises.getUsercategory();
+  }
+
+
   Future<List<Todoclass>?>getCategoryTodos(String category)async{
     
   return await  _todoServises.fetchcategorytodos(category);
+  }
+
+  Future <void>addnewcategory(String newcategory)async{
+    return await _todoServises.addnewcategory(newcategory);
   }
 
 

@@ -1,13 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_mate2/features/apps_pages/view/about_page.dart';
+import 'package:task_mate2/features/apps_pages/view/settings_page.dart';
 import 'package:task_mate2/features/auth/view/login_screen.dart';
 import 'package:task_mate2/features/auth/view/register_screen.dart';
 import 'package:task_mate2/features/auth/view/splashscreen.dart';
 import 'package:task_mate2/features/auth/view_model/auth_viewmodel.dart';
+import 'package:task_mate2/features/pofile&settings/view/profilepage.dart';
 import 'package:task_mate2/features/todo_screen/view/add_todoscreen.dart';
+import 'package:task_mate2/features/todo_screen/view/all_todo_screen.dart';
+import 'package:task_mate2/features/todo_screen/view/home.dart';
 import 'package:task_mate2/features/todo_screen/view/home_screen.dart';
 import 'package:task_mate2/features/todo_screen/view_model/todo_viewmodel.dart';
-import 'package:task_mate2/widgets/checkwidget.dart';
 
 
 void main() {
@@ -41,9 +45,13 @@ class MyApp extends StatelessWidget {
         '/singupscreen':(context)=>SignupScreen(),
         '/homescreen':(context)=> Homescreen(),
         '/addtodoscreen':(context)=>const AddTodoscreen(),
+        '/profilecsreen':(context)=> Profilepage(),
+        '/settingspage':(context)=>const SettingsPage(),
+        '/aboutpage':(context)=>const AboutPage(),
+        '/alltodopage':(context)=>const AllTodoScreen()
       },
       initialRoute: '/',
-    //  home:const CategoryPage(),
+      // home:const Home()
     
     );
   }
