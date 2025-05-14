@@ -17,14 +17,20 @@ Logoutservice _logoutservice =Logoutservice();
         child: ListView(children: [
           DrawerHeader(
             decoration:
-                const BoxDecoration(color: Color.fromARGB(255, 122, 191, 247)),
+                const BoxDecoration(
+                 // color: Color.fromARGB(255, 122, 191, 247)
+                  ),
             child: Column(
               children: [
                 Column(
                   children: [
-                    const CircleAvatar(
-                      radius: 50,
-                    ),
+                    Consumer<TodoViewModel>(builder: (context, value, _) {
+                    final user= value.user;
+                    return  CircleAvatar(
+                          backgroundImage:user?.profileimage==null?const AssetImage('assets/istockphoto-1337144146-612x612.jpg'): NetworkImage('${user?.profileimage}'),
+                        radius: 50,
+                      );
+    }  ),
                     AppSpacing.h10,
                     Text(user?.name.toString() ?? '')
                   ],

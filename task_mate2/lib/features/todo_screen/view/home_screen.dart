@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
-import 'package:task_mate2/features/pofile&settings/view/profilepage.dart';
 import 'package:task_mate2/features/todo_screen/view/categoryscreen.dart';
 import 'package:task_mate2/features/todo_screen/view/widgets/add_category.dart';
 import 'package:task_mate2/features/todo_screen/view/widgets/category_tile.dart';
@@ -38,21 +37,23 @@ class _HomescreenState extends State<Homescreen> {
     super.initState();
     WidgetsBinding.instance.addPostFrameCallback((_) {
       final viewmodel = Provider.of<TodoViewModel>(context, listen: false);
-      viewmodel.userdetail();
-      viewmodel.getUsercategory();
-      viewmodel.getAllcategory();
-    
+      if (viewmodel.user == null) {
+        viewmodel.userdetail();
+      }
+      if (viewmodel.categories == null) {
+        viewmodel.loadAllCategories();
+      }
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final userProvider = context.watch<TodoViewModel>();
-    final user = userProvider.user;
+    // final userProvider = context.watch<TodoViewModel>();
+
     return Scaffold(
       extendBodyBehindAppBar: true,
       backgroundColor: Colors.transparent,
-      drawer:  Hmdrawer(),
+      drawer: Hmdrawer(),
       //AppBar
       appBar: AppBar(
         leading: Builder(builder: (context) {
@@ -85,9 +86,7 @@ class _HomescreenState extends State<Homescreen> {
         ),
         actions: const [AppSpacing.w10],
       ),
-      body:
-      
-      Container(
+      body: Container(
         decoration: const BoxDecoration(
           gradient: backgroundColor,
         ),
@@ -100,7 +99,7 @@ class _HomescreenState extends State<Homescreen> {
             AppSpacing.h20,
             Padding(
               padding: const EdgeInsets.all(15.0),
-                  // search bar
+              // search bar
 
               child: TextField(
                 decoration: InputDecoration(
@@ -124,7 +123,7 @@ class _HomescreenState extends State<Homescreen> {
             const Padding(
               padding: EdgeInsets.only(left: 15),
 
-              // category 
+              // category
 
               child: Customtext(
                 text: 'Category',
@@ -139,7 +138,7 @@ class _HomescreenState extends State<Homescreen> {
                   height: 175,
                   child: Consumer<TodoViewModel>(
                     builder: (context, viewModel, _) {
-                      final categories = viewModel.usercategories ?? [];
+                      final categories = viewModel.categories ?? [];
 
                       if (viewModel.isLoading && categories.isEmpty) {
                         return const Center(child: CircularProgressIndicator());
@@ -157,11 +156,12 @@ class _HomescreenState extends State<Homescreen> {
                                     context: context,
                                     builder: (context) {
                                       return ShowDialoges(
-                                          onTap: (p0) {
-                                            viewModel.addnewcategory(
-                                                _controller.text);
-                                          },
-                                          categoryController: _controller);
+                                        categoryController: _controller,
+                                        onTap: () async {
+                                          await viewModel
+                                              .addnewcategory(_controller.text);
+                                        },
+                                      );
                                     },
                                   );
                                 },
@@ -191,9 +191,14 @@ class _HomescreenState extends State<Homescreen> {
               child: Taskcontainer(),
             ),
           ],
-        ),));
-      
-  
-      
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () {
+          Navigator.pushNamed(context, '/addtodoscreen');
+        },
+        child: const Icon(Icons.add),
+      ),
+    );
   }
 }

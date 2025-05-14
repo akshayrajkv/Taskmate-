@@ -1,5 +1,6 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:task_mate2/features/todo_screen/model/todomodel.dart';
 import 'package:task_mate2/features/todo_screen/model/userdetailmodel.dart';
 import 'package:task_mate2/features/todo_screen/repository/classtodorepo.dart';
@@ -10,9 +11,10 @@ class TodoViewModel with ChangeNotifier {
   Usermodel? user;
   bool isLoading = false;
   List<Todoclass>? todos;
-  List<Todoclass>?catecorytodos;
+  List<Todoclass>?categorytodos;
   List<String>? categories;
   List<String>? usercategories;
+  List<Todoclass> filtertasks=[];
 
 //get user
   Future<void>userdetail()async{
@@ -27,6 +29,17 @@ class TodoViewModel with ChangeNotifier {
   }
   isLoading=false;
   notifyListeners();
+  }
+
+  Future<void>updateuser(String profileimage)async{
+    try{
+      isLoading =true;
+      notifyListeners();
+      await _todoRepo.updateuser(profileimage);
+      userdetail();
+    }catch(e){
+      print("error in updating");
+    }
   }
 
   // feach todo
@@ -45,50 +58,88 @@ class TodoViewModel with ChangeNotifier {
   notifyListeners();
 }
 
+// filtet task by due date
+
+void filtertaskbyduedate(String dueDate) {
+  DateTime selectedDate = DateTime.parse(dueDate);
+
+  filtertasks = todos!.where((task) {
+    DateTime taskDate = DateTime.parse(task.dueDate.toString());
+    return taskDate.year == selectedDate.year &&
+          taskDate.month == selectedDate.month &&
+          taskDate.day == selectedDate.day;
+  }).toList();
+
+  notifyListeners();
+}
+
+
+
+
+
+
+
   
     Future<bool> addTodo(Todoclass todo) async {
     bool success = await _todoRepo.createTodo(todo);
     if (success=true) {
       print ("success");
       await fetchTodos();
-      notifyListeners();// Refresh list after adding
+      notifyListeners();
+      filtertaskbyduedate(DateFormat('yyyy-MM-dd').format(DateTime.now()));
+    // Refresh list after adding
     }
     return success;
   }
 
-// get all categories
+// update todo
 
-Future<void>getAllcategory()async{
+  Future<bool>updateTodo(String taskid,Todoclass todo)async{
     try{
-  isLoading = true;
-  notifyListeners();
+      bool success = await _todoRepo.updateTodo(taskid, todo);
+      if(success==true){
+        await fetchTodos();
+        notifyListeners();
+      }
+      return success;
+    }catch(e){
+      print("error in updating $e");
+      return false;
+    }
+  }
 
-    final allcategories = await _todoRepo.getallcategories();
-    categories = allcategories;
-    print("the categoryies are : ${ categories}");
-  }catch(e){
-  print(e);
+  //delete a todo
+  Future<void>deleteTodo(String taskid)async{
+    try{
+      await _todoRepo.deleteTodo(taskid);
+      fetchTodos();
+      notifyListeners();
+      filtertaskbyduedate(DateFormat('yyyy-MM-dd').format(DateTime.now()));
+
+    }catch(e){
+      print("delete error :$e");
+    }
+  }
+
+Future<void> loadAllCategories() async {
+  try {
+    isLoading = true;
+    notifyListeners();
+
+  final  defaultCategories = await _todoRepo.getallcategories();
+    usercategories = await _todoRepo.getUsercategories();
+
+    // Merge both lists
+    categories = [...?defaultCategories, ...?usercategories];
+
+    print("All categories: $categories");
+  } catch (e) {
+    print(e);
   }
   isLoading = false;
   notifyListeners();
 }
 
-//feach user category
-
-Future<void>getUsercategory()async{
-    try{
-  isLoading = true;
-  notifyListeners();
-
-    final allcategories = await _todoRepo.getUsercategories();
-    usercategories = allcategories;
-    print("the user categoryies are : ${ categories}");
-  }catch(e){
-  print(e);
-  }
-  isLoading = false;
-  notifyListeners();
-}
 
 //feach todos based on category
 Future <void> fetchCatgoryTodos(String category) async {
@@ -96,7 +147,7 @@ Future <void> fetchCatgoryTodos(String category) async {
   notifyListeners();
   try {
     final fetchedCategoryTodos = await _todoRepo.getCategoryTodos(category); // Replace with your actual fetch logic
-    catecorytodos = fetchedCategoryTodos;
+    categorytodos = fetchedCategoryTodos;
   } catch (e) {
     print("Error fetching todos: $e");
   }
@@ -109,10 +160,12 @@ Future <void>addnewcategory(String newcategory)async{
 
   try {
     await _todoRepo.addnewcategory(newcategory);
-    
-      print("added");
+loadAllCategories();
+notifyListeners();
+
   }catch(e){
     print(e);
+    print("error in category adding");
   
 }
 

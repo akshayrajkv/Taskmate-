@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 
 class ShowDialoges extends StatelessWidget {
   TextEditingController categoryController = TextEditingController();
-  final Function(String) onTap ;
+ final Function onTap ;
 
   ShowDialoges({super.key, required this.categoryController, required this.onTap});
   @override
@@ -15,7 +15,7 @@ class ShowDialoges extends StatelessWidget {
       actions: [
         ElevatedButton(onPressed: (){
           Navigator.pop(context);
-          onTap;
+          onTap();
         }, child:const Text('Save'))
       ],
 

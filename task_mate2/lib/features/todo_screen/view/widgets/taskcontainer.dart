@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
+import 'package:task_mate2/features/todo_screen/view/edit_todo.dart';
 import 'package:task_mate2/features/todo_screen/view/widgets/task_tile.dart';
 import 'package:task_mate2/features/todo_screen/view_model/todo_viewmodel.dart';
 import 'package:task_mate2/widgets/customtext.dart';
@@ -17,11 +19,17 @@ class Taskcontainer extends StatefulWidget {
 }
 
 class _TaskcontainerState extends State<Taskcontainer> {
+  String formattedDate = DateFormat('yyyy-MM-dd').format(DateTime.now());
+ 
   @override
   void initState() {
     super.initState();
-    WidgetsBinding.instance.addPostFrameCallback((_) {
-      Provider.of<TodoViewModel>(context, listen: false).fetchTodos();
+    WidgetsBinding.instance.addPostFrameCallback((_) async{
+      //  Initial filtering on today's date
+    
+    final provider=  Provider.of<TodoViewModel>(context, listen: false);
+   await provider.fetchTodos();
+   provider.filtertaskbyduedate(formattedDate);
     });
   }
 
@@ -63,12 +71,11 @@ class _TaskcontainerState extends State<Taskcontainer> {
                 return const Center(child: CircularProgressIndicator());
               }
 
-              final todos = todoprovider.todos;
-              if (todos == null || todos.isEmpty) {
-                return const Center(child: Text("No todos found"));
-              }
+              final todos = todoprovider.filtertasks;
+        return   todos.isEmpty
+                    ? Center(child: Text("No tasks for Today")):
 
-              return ListView.builder(
+              ListView.builder(
                 padding: EdgeInsets.zero,
               
                 itemCount: todos.length,
@@ -78,6 +85,11 @@ class _TaskcontainerState extends State<Taskcontainer> {
                   
                     children: [
                       Tasktile(
+                        onTap: (){
+                        Navigator.push(context,MaterialPageRoute(builder: (context) {
+                        return  EditTodo(todo: todos[index]);
+                        },));
+                        },
                         isChecked: false,
                         title: todo.title.toString(),
                       ),

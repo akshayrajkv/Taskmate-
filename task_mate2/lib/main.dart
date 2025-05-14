@@ -9,7 +9,6 @@ import 'package:task_mate2/features/auth/view_model/auth_viewmodel.dart';
 import 'package:task_mate2/features/pofile&settings/view/profilepage.dart';
 import 'package:task_mate2/features/todo_screen/view/add_todoscreen.dart';
 import 'package:task_mate2/features/todo_screen/view/all_todo_screen.dart';
-import 'package:task_mate2/features/todo_screen/view/home.dart';
 import 'package:task_mate2/features/todo_screen/view/home_screen.dart';
 import 'package:task_mate2/features/todo_screen/view_model/todo_viewmodel.dart';
 
@@ -48,7 +47,8 @@ class MyApp extends StatelessWidget {
         '/profilecsreen':(context)=> Profilepage(),
         '/settingspage':(context)=>const SettingsPage(),
         '/aboutpage':(context)=>const AboutPage(),
-        '/alltodopage':(context)=>const AllTodoScreen()
+        '/alltodopage':(context)=>const AllTodoScreen(),
+      
       },
       initialRoute: '/',
       // home:const Home()

@@ -4,13 +4,15 @@ class Todoclass {
   bool? isCompleted;
   String? priority;
   String? category;
+  String?taskid;
 
   Todoclass(
       {this.title,
       this.dueDate,
       this.isCompleted,
       this.priority,
-      this.category});
+      this.category,
+      this.taskid});
 
   Todoclass.fromJson(Map<String, dynamic> json) {
     title = json['title'];
@@ -18,6 +20,7 @@ class Todoclass {
     isCompleted = json['isCompleted'];
     priority = json['priority'];
     category = json['category'];
+    taskid =json['taskId'];
   }
 
   Map<String, dynamic> toJson() {

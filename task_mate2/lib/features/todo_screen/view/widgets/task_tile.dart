@@ -4,11 +4,13 @@ import 'package:flutter/material.dart';
 class Tasktile extends StatefulWidget {
   String title;
   bool isChecked;
+  VoidCallback onTap;
 
   Tasktile({
     super.key,
     required this.title,
     required this.isChecked,
+    required this.onTap,
   });
 
   @override
@@ -47,6 +49,7 @@ class _TasktileState extends State<Tasktile> {
                 //   Icons.pending_actions_rounded,
                 //   color: Color.fromARGB(255, 235, 139, 132),
                 // ),
+                onTap:widget.onTap,
                 title: Text(widget.title),
                 trailing: Checkbox(
                   value: widget.isChecked,

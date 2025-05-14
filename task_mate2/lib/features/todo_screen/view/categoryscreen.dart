@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:task_mate2/features/todo_screen/view/edit_todo.dart';
 import 'package:task_mate2/features/todo_screen/view_model/todo_viewmodel.dart';
 import 'package:task_mate2/util/consts.dart';
 import 'package:task_mate2/widgets/custom_tile_widget.dart';
@@ -79,7 +80,7 @@ class _CategoryPageState extends State<CategoryPage> {
                           child: CircularProgressIndicator(),
                         );
                       }
-                      final todos = todoprovidr.catecorytodos;
+                      final todos = todoprovidr.categorytodos;
                       if (todos == null || todos.isEmpty) {
                         return const Center(
                           child: Text('No todos found'),
@@ -92,6 +93,11 @@ class _CategoryPageState extends State<CategoryPage> {
                           return Column(
                             children: [
                               CustomTileWidget(
+                                onTap: (){
+                                  Navigator.push(context,MaterialPageRoute(builder: (context) {
+                                    return EditTodo(todo: todo);
+                                  },));
+                                },
                                 dueDate: todo.title.toString(),
                                 isCompleted: todo.isCompleted.toString(),
                                 title: todo.title.toString(),

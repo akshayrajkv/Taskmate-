@@ -6,24 +6,28 @@ import 'package:task_mate2/features/todo_screen/view_model/todo_viewmodel.dart';
 import 'package:task_mate2/util/consts.dart';
 import 'package:task_mate2/widgets/customtext.dart';
 
-class AddTodoscreen extends StatefulWidget {
-  const AddTodoscreen({super.key});
+class EditTodo extends StatefulWidget {
+  Todoclass todo;
+  
+    EditTodo({super.key,required this.todo});
 
   @override
-  State<AddTodoscreen> createState() => _AddTodoscreenState();
+  State<EditTodo> createState() => _EditTodo();
+  
 }
 
-class _AddTodoscreenState extends State<AddTodoscreen> {
+class _EditTodo extends State<EditTodo> {
   // TodoViewModel _todoViewModel =TodoViewModel();
-
+  String? selectedValue = 'Work';
   String? selectedPriority = 'Low';
-  String? selectedValue;
 
+  List<String> category = ['Work', 'Personal'];
   List<String> priority = ['Low', 'Medium', 'High', 'Urgent'];
-  final TextEditingController _taskcontroller = TextEditingController();
+ final TextEditingController _taskcontroller =TextEditingController() ;
   final TextEditingController _datetimecontroller = TextEditingController();
   final TextEditingController _timecontroller = TextEditingController();
 
+  late String taskid;
   final FocusNode _focusNode1 = FocusNode();
   final FocusNode _focusNode2 = FocusNode();
   final FocusNode _focusNode3 = FocusNode();
@@ -39,11 +43,22 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
     _focusNode4.dispose();
     _focusNode5.dispose();
   }
+@override
+void initState() {
+  super.initState();
+   taskid = widget.todo.taskid!;
+  _taskcontroller.text = widget.todo.title.toString();
+  _datetimecontroller.text = widget.todo.dueDate ?? '';
+  selectedValue = widget.todo.category ?? 'Work';
+  selectedPriority = widget.todo.priority ?? 'Low';
+}
 
   @override
   Widget build(BuildContext context) {
+  
     final todoprovider = Provider.of<TodoViewModel>(context);
     return Scaffold(
+  
       body: Container(
         decoration: const BoxDecoration(
           gradient: backgroundColor,
@@ -53,14 +68,21 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
         width: double.infinity,
         child: SafeArea(
           child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
             children: [
+              
+              IconButton(onPressed: (){
+                Navigator.pop(context);
+              }, icon:const Icon(Icons.arrow_back,color: Colors.white,)),
               // add task textfiled
-
+              AppSpacing.h10,
               TextField(
+                
                 textCapitalization: TextCapitalization.sentences,
                 focusNode: _focusNode1,
                 controller: _taskcontroller,
                 decoration: InputDecoration(
+                  suffixIcon: Icon(Icons.edit),
                     fillColor: Colors.white,
                     filled: true,
                     hintText: 'Task',
@@ -222,10 +244,11 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
             Expanded(
                 child: TextButton(
               onPressed: () {
-                Navigator.pop(context);
+                todoprovider.deleteTodo(taskid);
+                Navigator.pop(context,true);
               },
               child: const Customtext(
-                text: 'CANCEL',
+                text: 'DELETE',
                 size: 18,
               ),
             )),
@@ -237,12 +260,12 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
                         final todo = Todoclass(
                           title: _taskcontroller.text.trim(),
                           dueDate: _datetimecontroller.text.trim(),
-                          category: selectedValue ?? 'Work',
+                          category: selectedValue ,
                           priority: selectedPriority ?? 'Low',
                           isCompleted: false,
                         );
 
-                        todoprovider.addTodo(todo).then((value) {
+                        todoprovider.updateTodo(taskid,todo).then((value) {
                           Navigator.pop(context); // Go back to previous screen
                         });
                       } else {
@@ -279,13 +302,6 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
       });
       FocusScope.of(context).requestFocus(_focusNode4);
     }
-  //     if (_picked != null) {
-  //   String formattedDate = DateFormat('dd-MM-yyyy').format(_picked);
-  //   setState(() {
-  //     _datetimecontroller.text = formattedDate;
-  //   });
-  //   FocusScope.of(context).requestFocus(_focusNode4);
-  // }
   }
 
   Future<void> _selectTime(BuildContext context) async {

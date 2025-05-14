@@ -89,7 +89,7 @@ class _SignupScreenState extends State<SignupScreen> {
                         passwordController.text.trim(),
                         emailController.text.trim(),
                       );
-                      if (error == null) {
+                      if (error == null||error.isEmpty) {
                         print(error);
                         Navigator.pushReplacement(
                             context,

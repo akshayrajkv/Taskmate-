@@ -4,48 +4,52 @@ class CustomTileWidget extends StatelessWidget {
   String title;
   String isCompleted;
   String dueDate;
-  CustomTileWidget({super.key ,required this.title,required this.dueDate,required this.isCompleted});
+  VoidCallback onTap;
+  CustomTileWidget({super.key ,required this.title,required this.dueDate,required this.isCompleted,required this.onTap});
 
   @override
   Widget build(BuildContext context) {
     return 
-    Container(
-      padding:const EdgeInsets.all(16),
-          margin:const EdgeInsets.all(16),
-     // height: 100,
-      decoration: BoxDecoration(
-        color:const Color(0xFFFDE6FF),
-        borderRadius: BorderRadius.circular(20)
-      ),
-      width: double.infinity,
-      child: Padding(
-        padding: const EdgeInsets.only(left: 30,right: 30 ,),
-        child: Column(
-          
-     //     mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.start,
-          children: [
-          Text(title),
-            Row(
-              children: [
-            const   Expanded(
-              child:  Divider(
-                color: Colors.grey,
+    InkWell(
+      onTap: onTap,
+      child: Container(
+        padding:const EdgeInsets.all(16),
+            margin:const EdgeInsets.all(16),
+       // height: 80,
+        decoration: BoxDecoration(
+          color:const Color(0xFFFDE6FF),
+          borderRadius: BorderRadius.circular(20)
+        ),
+        width: double.infinity,
+        child: Padding(
+          padding: const EdgeInsets.only(left: 30,right: 30 ,),
+          child: Column(
+            
+       //     mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.start,
+            children: [
+            Text(title),
+              Row(
+                children: [
+              const   Expanded(
+                child:  Divider(
+                  color: Colors.grey,
+                ),
               ),
-            ),
-                Checkbox(value: false, onChanged:(value) {
-                  
-                },),
-              ],
-              
-            ),
-          Row(
-              children: [
-              const  Icon(Icons.access_time),
-                Text(dueDate),
-              ],
-            )
-          ],
+                  Checkbox(value: false, onChanged:(value) {
+                    
+                  },),
+                ],
+                
+              ),
+            Row(
+                children: [
+                const  Icon(Icons.access_time),
+                  Text(dueDate),
+                ],
+              )
+            ],
+          ),
         ),
       ),
     );
