@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:task_mate2/features/habit/view/pages/habit_screen.dart';
 import 'package:task_mate2/features/pofile&settings/view/profilepage.dart';
-import 'package:task_mate2/features/todo_screen/view/habit_screen.dart';
 import 'package:task_mate2/features/todo_screen/view/home_screen.dart';
 import 'package:task_mate2/features/todo_screen/view/timer_screen.dart';
 
@@ -34,9 +34,8 @@ class _HomeState extends State<Home> {
 
       bottomNavigationBar: BottomNavigationBar(
           type: BottomNavigationBarType.fixed,
-          backgroundColor:
-              const Color.fromARGB(255, 155, 22, 179), // Background color
-          selectedItemColor: Colors.white, // Color of selected item
+          backgroundColor:Colors.black, // Background color
+          selectedItemColor: const Color.fromARGB(255, 10, 129, 226), // Color of selected item
           unselectedItemColor: Colors.grey.shade400,
           currentIndex: selectedindex,
           onTap: _onItemTapped,
@@ -57,7 +56,7 @@ class _HomeState extends State<Home> {
             ),
             BottomNavigationBarItem(icon: Icon(Icons.person), label: 'profile'),
           ]),
-   
+  
       // floatingActionButtonLocation:
       //     FloatingActionButtonLocation.miniCenterDocked,
     );

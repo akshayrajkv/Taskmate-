@@ -126,9 +126,9 @@ class _DateScrollerState extends State<DateScroller> {
               padding: const EdgeInsets.all(10),
               decoration: BoxDecoration(
                 color: isSelected
-                    ? Colors.purple
+                    ? const Color.fromARGB(255, 4, 76, 135)
                     : isToday
-                        ? Colors.blueAccent
+                        ? Colors.green
                         : Colors.grey[300],
                 borderRadius: BorderRadius.circular(12),
               ),

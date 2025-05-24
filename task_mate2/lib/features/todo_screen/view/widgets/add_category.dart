@@ -10,6 +10,7 @@ class ShowDialoges extends StatelessWidget {
     return AlertDialog(
       title:const Text('Add New Category'),
       content: TextField(
+        textCapitalization: TextCapitalization.sentences,
         controller: categoryController,
       ),
       actions: [

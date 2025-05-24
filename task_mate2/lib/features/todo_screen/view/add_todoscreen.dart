@@ -46,7 +46,8 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
     return Scaffold(
       body: Container(
         decoration: const BoxDecoration(
-          gradient: backgroundColor,
+          image: DecorationImage(image: backgroundimage,
+          fit: BoxFit.cover)
         ),
         padding: const EdgeInsets.all(15),
         height: double.infinity,
@@ -98,8 +99,8 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
         }
                       
                   return DropdownButton(
-                        iconEnabledColor: Colors.white,
-                        dropdownColor: Color(0xFFEA82FF),
+                        iconEnabledColor: const Color.fromARGB(255, 10, 129, 226),
+                        dropdownColor: Colors.black,
                         items: category?.map((String item) {
                           return DropdownMenuItem(
                               value: item,
@@ -187,8 +188,8 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
                 trailing: Container(
                   child: DropdownButton(
                     focusNode: _focusNode5,
-                    iconEnabledColor: Colors.white,
-                    dropdownColor: Color(0xFFEA82FF),
+                    iconEnabledColor: const Color.fromARGB(255, 10, 129, 226),
+                    dropdownColor:  Colors.black,
                     items: priority.map((String item) {
                       return DropdownMenuItem(
                           value: item,
@@ -215,7 +216,7 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
       ),
       bottomNavigationBar: BottomAppBar(
         height: 60,
-        color:const Color(0xFFEA82FF),
+        color:Colors.black,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -227,6 +228,7 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
               child: const Customtext(
                 text: 'CANCEL',
                 size: 18,
+                color:  const Color.fromARGB(255, 10, 129, 226),
               ),
             )),
             Expanded(
@@ -254,9 +256,10 @@ class _AddTodoscreenState extends State<AddTodoscreen> {
                         );
                       }
                     },
-                    child: const Customtext(
+                    child:  Customtext(
+                      color: bottombuttoncolor,
                       text: 'CONFIRM',
-                      size: 15,
+                      size: 18,
                     )
                     )
                     )

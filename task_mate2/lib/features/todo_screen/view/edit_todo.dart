@@ -61,7 +61,7 @@ void initState() {
   
       body: Container(
         decoration: const BoxDecoration(
-          gradient: backgroundColor,
+        image:DecorationImage(image:backgroundimage,fit: BoxFit.cover)
         ),
         padding: const EdgeInsets.all(15),
         height: double.infinity,
@@ -117,17 +117,17 @@ void initState() {
                         final category =value.categories;
                           if (selectedValue == null && category!.isNotEmpty) {
           selectedValue = category[0];
-        }
+                  }
                       
                   return DropdownButton(
                         iconEnabledColor: Colors.white,
-                        dropdownColor: Color(0xFFEA82FF),
+                        dropdownColor:const Color(0xFFEA82FF),
                         items: category?.map((String item) {
                           return DropdownMenuItem(
                               value: item,
                               child: Text(
                                 item,
-                                style: TextStyle(color: Colors.white),
+                                style:const TextStyle(color: Colors.white),
                               ));
                         }).toList(),
                         onChanged: (String? newvalue) {
@@ -237,7 +237,7 @@ void initState() {
       ),
       bottomNavigationBar: BottomAppBar(
         height: 60,
-        color:const Color(0xFFEA82FF),
+        color:Colors.black,
         child: Row(
           mainAxisAlignment: MainAxisAlignment.spaceEvenly,
           children: [
@@ -247,8 +247,9 @@ void initState() {
                 todoprovider.deleteTodo(taskid);
                 Navigator.pop(context,true);
               },
-              child: const Customtext(
+              child: Customtext(
                 text: 'DELETE',
+                color: bottombuttoncolor,
                 size: 18,
               ),
             )),
@@ -277,9 +278,10 @@ void initState() {
                         );
                       }
                     },
-                    child: const Customtext(
+                    child:  Customtext(
+                      color: bottombuttoncolor,
                       text: 'CONFIRM',
-                      size: 15,
+                      size: 18,
                     )
                     )
                     )

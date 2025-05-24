@@ -33,11 +33,15 @@ class _CategoryPageState extends State<CategoryPage> {
       body: Stack(
         children: [
           Container(
+            decoration: const BoxDecoration(
+              image: DecorationImage(image: backgroundimage,
+              fit: BoxFit.cover)
+            ),
             height: double.infinity,
             width: double.infinity,
-            color: const Color(0xFFEA82FF),
+            //color: const Color(0xFFEA82FF),
             child: Padding(
-              padding: const EdgeInsets.only(top: 70, left: 10),
+              padding: const EdgeInsets.only(top: 60, left: 10),
               child: Row(
                 crossAxisAlignment: CrossAxisAlignment.start,
           
@@ -46,7 +50,8 @@ class _CategoryPageState extends State<CategoryPage> {
                       onPressed: () {
                         Navigator.pop(context);
                       },
-                      icon: const Icon(Icons.arrow_back)),
+                      icon: const Icon(Icons.arrow_back,
+                      color: Colors.white,)),
                   const SizedBox(
                     width: 100,
                   ),
@@ -62,8 +67,12 @@ class _CategoryPageState extends State<CategoryPage> {
             bottom: 0,
             child: Container(
               width: double.infinity,
-              decoration: const BoxDecoration(
-                color: Colors.white,
+              decoration:  BoxDecoration(
+                border: Border.all(
+                  width: 0.5,
+                  color: Colors.blue
+                ),
+                color: containercolor,
                 borderRadius: BorderRadius.only(
                     topLeft: Radius.circular(35),
                     topRight: Radius.circular(35)),

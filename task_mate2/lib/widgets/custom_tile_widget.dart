@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:task_mate2/util/consts.dart';
+import 'package:task_mate2/widgets/customtext.dart';
 
 class CustomTileWidget extends StatelessWidget {
   String title;
@@ -17,7 +19,7 @@ class CustomTileWidget extends StatelessWidget {
             margin:const EdgeInsets.all(16),
        // height: 80,
         decoration: BoxDecoration(
-          color:const Color(0xFFFDE6FF),
+          color:containercolor,
           borderRadius: BorderRadius.circular(20)
         ),
         width: double.infinity,
@@ -28,15 +30,17 @@ class CustomTileWidget extends StatelessWidget {
        //     mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-            Text(title),
+            Customtext(text: title,color: Colors.white,),
               Row(
                 children: [
               const   Expanded(
                 child:  Divider(
-                  color: Colors.grey,
+                  color: Colors.white,
                 ),
               ),
-                  Checkbox(value: false, onChanged:(value) {
+                  Checkbox(
+                    
+                    value: false, onChanged:(value) {
                     
                   },),
                 ],
@@ -44,8 +48,8 @@ class CustomTileWidget extends StatelessWidget {
               ),
             Row(
                 children: [
-                const  Icon(Icons.access_time),
-                  Text(dueDate),
+                const  Icon(Icons.access_time,color: Colors.white,),
+                  Customtext(text: dueDate,color: Colors.white,),
                 ],
               )
             ],

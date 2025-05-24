@@ -60,6 +60,7 @@ import 'package:intl/intl.dart';
 import 'package:provider/provider.dart';
 import 'package:task_mate2/features/todo_screen/view/edit_todo.dart';
 import 'package:task_mate2/features/todo_screen/view_model/todo_viewmodel.dart';
+import 'package:task_mate2/util/consts.dart';
 import 'package:task_mate2/widgets/custom_tile_widget.dart';
 import 'package:task_mate2/widgets/customtext.dart';
 import 'package:task_mate2/widgets/tododateselector.dart';
@@ -97,48 +98,68 @@ class _AllTodoScreenState extends State<AllTodoScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        //  Show user-friendly date
-        title: Customtext(
-          text: DateFormat('MMMM d').format(DateTime.parse(formattedDate)),
-          color: Colors.black,
+    return Scaffold(  
+      
+      body: Container(
+        decoration:const BoxDecoration(
+          image:DecorationImage(image: backgroundimage,fit: BoxFit.cover)
         ),
-      ),
-      body: Column(
-        crossAxisAlignment: CrossAxisAlignment.start,
-        children: [
-          //  Pass working callback
-          DateScroller(onDateSelected: _onDateSelected),
-
-          //  Listen to ViewModel and build filtered task list
-          Expanded(
-            child: Consumer<TodoViewModel>(
-              builder: (context, value, child) {
-                final filtertodos = value.filtertasks;
-
-                return filtertodos.isEmpty
-                    ? Center(child: Text("No tasks for this date"))
-                    : ListView.builder(
-                        itemCount: filtertodos.length,
-                        itemBuilder: (context, index) {
-                          final task = filtertodos[index];
-                          return CustomTileWidget(
-                            onTap: () {
-                              Navigator.push(context,MaterialPageRoute(builder: (context) {
-                                return EditTodo(todo: task);
-                              },));
-                            },
-                            title: task.title.toString(),
-                            dueDate: task.dueDate!.split("T")[0],
-                            isCompleted: task.isCompleted.toString() ,
-                          );
-                        },
-                      );
-              },
-            ),
+        child: Column(
+          
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+          Padding(
+            padding: const EdgeInsets.only(top: 80,left: 20,bottom: 30),
+            child: Row(
+                children: [
+              InkWell(
+                onTap: (){
+                  Navigator.pop(context);
+                },
+                child: const  Icon(Icons.arrow_back,color: Colors.white,)),
+              AppSpacing.w10,
+                          Customtext(
+            text: DateFormat('MMMM d').format(DateTime.parse(formattedDate)),
+            color: Colors.white,
+                    ),
+                ],
+              ),
           ),
-        ],
+            //  Pass working callback
+            DateScroller(onDateSelected: _onDateSelected),
+        
+            //  Listen to ViewModel and build filtered task list
+            Expanded(
+              child: Consumer<TodoViewModel>(
+                builder: (context, value, child) {
+                  final filtertodos = value.filtertasks;
+        
+                  return filtertodos.isEmpty
+                      ?const Center(child: Text("No tasks for this date",
+                      style: TextStyle(
+                        color: Colors.white
+                      ),))
+                      : ListView.builder(
+                          itemCount: filtertodos.length,
+                          itemBuilder: (context, index) {
+                            final task = filtertodos[index];
+                            return CustomTileWidget(
+                              onTap: () {
+                                Navigator.push(context,MaterialPageRoute(builder: (context) {
+                                  return EditTodo(todo: task);
+                                },));
+                              },
+                              title: task.title.toString(),
+                              dueDate: task.dueDate!.split("T")[0],
+                              isCompleted: task.isCompleted.toString() ,
+                            );
+                          },
+                        );
+                },
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }

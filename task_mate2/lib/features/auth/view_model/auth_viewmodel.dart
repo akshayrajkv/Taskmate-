@@ -16,12 +16,20 @@ class AuthViewModel extends ChangeNotifier {
 
     User user = User(email: email, password: password,name: username);
     final response = await _authRepository.register(user);
-
-    _isLoading = false;
+      _isLoading = false;
     notifyListeners();
 
-    return response["message"];
+
+    if(response["success"]==true){
+      return null;
+    }else{
+      return response["message"];
+    }
+
+  
+  
   }
+
 
   Future<String?> login(String email, String password) async {
     _isLoading = true;

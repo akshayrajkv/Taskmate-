@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:task_mate2/features/auth/view/login_screen.dart';
 import 'package:task_mate2/features/auth/view/widgets/custombutton.dart';
 import 'package:task_mate2/features/auth/view/widgets/customtextfield.dart';
 import 'package:task_mate2/features/auth/view_model/auth_viewmodel.dart';
@@ -6,7 +7,7 @@ import 'package:task_mate2/util/consts.dart';
 import 'package:task_mate2/widgets/customtext.dart';
 
 class SignupScreen extends StatefulWidget {
-  SignupScreen({super.key});
+  const SignupScreen({super.key});
 
   @override
   State<SignupScreen> createState() => _SignupScreenState();
@@ -18,7 +19,7 @@ class _SignupScreenState extends State<SignupScreen> {
   TextEditingController emailController = TextEditingController();
 
   TextEditingController passwordController = TextEditingController();
-  AuthViewModel _authViewModel = AuthViewModel();
+  final AuthViewModel _authViewModel = AuthViewModel();
   bool _obscuretext = true;
   void _toggleObcuretecxt() {
     setState(() {
@@ -37,7 +38,7 @@ class _SignupScreenState extends State<SignupScreen> {
       body: Container(
         height: double.infinity,
         width: double.infinity,
-        decoration: BoxDecoration(
+        decoration:const BoxDecoration(
           gradient: backgroundColor,
         ),
         child: SingleChildScrollView(
@@ -90,11 +91,12 @@ class _SignupScreenState extends State<SignupScreen> {
                         emailController.text.trim(),
                       );
                       if (error == null||error.isEmpty) {
-                        print(error);
+                        print("The register error is :  $error");
+                        // Navigator.pushNamed(context, '/loginscreen');
                         Navigator.pushReplacement(
                             context,
                             MaterialPageRoute(
-                              builder: (context) => SignupScreen(),
+                              builder: (context) => LoginScreen(),
                             ));
                       } else {
                         print(error);

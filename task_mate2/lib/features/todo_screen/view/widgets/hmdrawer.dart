@@ -13,7 +13,7 @@ Logoutservice _logoutservice =Logoutservice();
     final userProvider = context.watch<TodoViewModel>();
     final user = userProvider.user;
     return Drawer(
-        backgroundColor: Colors.white,
+        backgroundColor: Colors.black,
         child: ListView(children: [
           DrawerHeader(
             decoration:
@@ -68,8 +68,10 @@ Logoutservice _logoutservice =Logoutservice();
   return InkWell(
     onTap: onTap,
     child: ListTile(
-      leading: Icon(icon),
-      title: Text(title),
+      leading: Icon(icon,
+      color: Colors.white,),
+      title: Text(title,
+      style:const TextStyle(color: Colors.white),),
     ),
   );
 }

@@ -19,3 +19,9 @@ const Gradient backgroundColor =LinearGradient(
                 colors: [Color.fromARGB(255, 155, 22, 179), Colors.blue],
                 begin: Alignment.topLeft,
                 end: Alignment.bottomRight);
+
+
+const AssetImage backgroundimage = AssetImage('assets/Task Manager background.png');
+
+  Color containercolor =  const Color.fromARGB(255, 6, 239, 239).withOpacity(0.1);
+  Color bottombuttoncolor = const Color.fromARGB(255, 10, 129, 226);
